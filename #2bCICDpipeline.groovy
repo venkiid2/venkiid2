@@ -51,8 +51,7 @@ parallel{
                 emailext attachLog: true,
                 body: " the job is successfully built and deployed "  // For Notification after getting output
                 compressLog: true,
-                replyTo: "do-not-reply@qt.com",
-                to: "qtdevops@gmail.com",
+                to: "venkiid2@gmail.com",
                 subject: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} -Status ${currentBuild.result}"
 
 
