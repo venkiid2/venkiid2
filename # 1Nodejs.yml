@@ -1,0 +1,71 @@
+# start creating kubrentes cluster using AWS cloud provider.first of all, go to Aws then we will need to select Ubuntu 18.04 or more 
+
+# Create 3 hosts and call them kube1, kube2 and kube3. You need to be running hosts with a minimum of 4GB RAM 
+#  1. Set up each server in the cluster to run kubernetes by installing components of kubernetes such as kubelet, kubectl, kubeadm 
+#  2. set up kuberenets master on any node with help of command is $ kubeadm init 
+#  3. set up worker nodes in cluster we need to paste the generated token on minions to get added to the cluster using $ kubeadm join token paste here 
+#  4. to know the available nodes in cluster $ kubectl get nodes 
+#  5. and also setup add-on plugins namely weaver, flannel these are useful for creating communication among the pods by installing 
+#     plugin on each worker-nodes 
+   
+#  Next , how to deploy the node.js app in kubenetes.
+  
+#      we need the developed version of node.js application to deploy 
+#  ---
+#   1. create a custom image using dockerfile to place the node.js apps 
+          
+#       FROM node:latest 
+#       WORKDIR /usr/src/app
+#       COPY package.json  ./app
+#       RUN npm install 
+#       COPY ..
+#       EXPOSE 3000
+
+#       CMD ["node", "index.js"]
+#  2. build above the dockerfile using docker commands and also create the container to run node.js apps
+#  3. here we need to upload the docker image to docker hub by logging in then , we have steps that are 
+#        $docker login 
+#        $docker push
+ 
+#  4. write our kuberenetes deployment using yaml and kubectl apply helloworld.yml
+#     and kubectl get deploymets
+ 
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     metadata:
+#       name: nodeapp-helloworld
+#       labels:
+#         apps: demo
+#     spec:
+#       replicas: 2
+#       selector:
+#         matchlabels:
+#           apps: demo
+#       template:
+#         metadata:
+#            labels:
+#              apps:demo
+#         spec:
+#           containers:
+#           - name: nodeserver
+#             image: demo/nodeapp:latest
+#             ports:
+#             - containerPort: 3000  
+
+#  5. create service for deployment and kubectl apply -f servicedemo.yml and kubectl get svc
+#     apiVersion: v1
+#     kind: Service
+#     metadata:
+#       name: nodeapp-service
+#     spec:
+#       selector:
+#         apps: demo
+#       type: LoadBalancer
+#       ports:
+#       - protocal: TCP
+#         port: 5000
+#         targetPort: 3000
+#         nodePort: 31220
+
+#    all these steps lead to show the final output of node.js app using external ip along with port pasting on browser to verfiy url whether wor
+#    working or not 

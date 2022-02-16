@@ -1,0 +1,42 @@
+  Here we have some options for scaling the pods such as manual and automatic methods to achieve desired state 
+
+     pod scaling 
+     
+#       suppose we are getting lots of load and requests for single pod then we need to scale out 
+#       kuberenetes supports auto-scaling feature in its core feature 
+      
+     1. pod manual scaling 
+#          after creating a deploment , we can scale in and out the replicas using commands 
+         
+#           that are kubectl scale --replicas=3 deployment/node-demo
+#                    kube get pods 
+
+     2. Pod auto-scaling
+
+#         another most useful feature in kubernetes is HPA ( horizantal pod auto-scaler)
+#         which is auto-scaling pods using the yaml file. the HPA will watch for CPU and Memory utilization 
+#         it will trigger when cpu utilization is below or above 50% 
+#         HPA can override the multitude of replicas placed in the deployment configuration
+
+#           apiVersion: autoscaling/v2beta2
+#           kind: HorizontalPodAutoscaler
+#           metadata:
+#             name: node-hpa
+#           spec:
+#             minReplicas: 2
+#             maxReplicas: 13
+#             scaleTargetRef:
+#               apiVersion: apps/v1
+#               kind: Deployment
+#               name: node-demo
+#             metrics:
+#             - type: Resource
+#               resource:
+#                 name: cpu
+#                 target:
+#                   type: Utilization
+#                   averageUtilization: 50
+        
+#         $ kubectl apply -f hap-demo.yml 
+#         $ kubectl get hpa [to know status of hpa]
+
